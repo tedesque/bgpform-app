@@ -1,0 +1,13 @@
+models:
+  Request:
+    circuit_id: string:200
+    circuit_speed: integer
+    request_status: enun:pendente,sucesso,falha default:'pendente'
+    token: string:50
+  Response:
+    request_id: id foreign:requests
+    device: string:200
+    router_table: enum:'full route', 'partial route', 'default route' default:'full route'
+    asn: integer
+    ipv4_prefix: ipAddress
+    ipv6_prefix: ipAddress
