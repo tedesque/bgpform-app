@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class RequestResource extends Resource
 {
@@ -23,7 +24,16 @@ class RequestResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('circuit_id')
+                    ->required()
+                    ->label('Designador'),
+                Forms\Components\TextInput::make('circuit_speed')
+                    ->required()
+                    ->numeric()
+                    ->label('Velocidade'),
+                Forms\Components\TextInput::make('token')
+                    ->default(strval(Str::uuid()))
+                    ->label('Token'),
             ]);
     }
 
@@ -31,7 +41,15 @@ class RequestResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('circuit_id')->label('Designador do circuito'),
+                Tables\Columns\TextColumn::make('circuit_speed')->label('Velocidade'),
+                Tables\Columns\TextColumn::make('request_status')->badge()->color(fn (string $state): string => match ($state) {
+                    'pendente' => 'warning',
+                    'sucesso' => 'success',
+                    'rejeitado' => 'danger',
+                }),
+                Tables\Columns\TextColumn::make('token')->label('Token'),
+                Tables\Columns\TextColumn::make('created_at')->label('Data criação'),
             ])
             ->filters([
                 //

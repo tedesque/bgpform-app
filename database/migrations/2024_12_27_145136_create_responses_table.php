@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('request_id')->constrained();
             $table->string('device', 200);
-            $table->enum('router_table', ["'full route'",""])->default('full route');
+            $table->enum('router_table', ["full route","partial route","default route"])->default('full route');
             $table->integer('asn');
             $table->ipAddress('ipv4_prefix');
             $table->ipAddress('ipv6_prefix');

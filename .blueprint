@@ -1,10 +1,11 @@
 created:
     - database/factories/RequestFactory.php
     - database/factories/ResponseFactory.php
-    - database/migrations/2024_12_27_035324_create_requests_table.php
-    - database/migrations/2024_12_27_035325_create_responses_table.php
+    - database/migrations/2024_12_27_145135_create_requests_table.php
+    - database/migrations/2024_12_27_145136_create_responses_table.php
     - app/Models/Request.php
     - app/Models/Response.php
 models:
-    Request: { circuit_id: 'string:200', circuit_speed: integer, request_status: "enun:pendente,sucesso,falha default:'pendente'", token: 'string:50' }
-    Response: { request_id: 'id foreign:requests', device: 'string:200', router_table: "enum:'full route', 'partial route', 'default route' default:'full route'", asn: integer, ipv4_prefix: ipAddress, ipv6_prefix: ipAddress }
+    User: { name: string, email: string, email_verified_at: 'timestamp nullable', password: string, remember_token: 'string:100 nullable' }
+    Request: { circuit_id: 'string:200', circuit_speed: integer, request_status: 'enum:"pendente","sucesso","rejeitado" default:"pendente"', token: uuid }
+    Response: { request_id: 'id foreign:requests', device: 'string:200', router_table: 'enum:"full route","partial route","default route" default:"full route"', asn: integer, ipv4_prefix: ipAddress, ipv6_prefix: ipAddress }

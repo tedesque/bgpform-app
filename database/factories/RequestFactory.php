@@ -23,8 +23,8 @@ class RequestFactory extends Factory
         return [
             'circuit_id' => $this->faker->regexify('[A-Za-z0-9]{200}'),
             'circuit_speed' => $this->faker->numberBetween(-10000, 10000),
-            'request_status' => $this->faker->word(),
-            'token' => $this->faker->regexify('[A-Za-z0-9]{50}'),
+            'request_status' => $this->faker->randomElement(["pendente","sucesso","rejeitado"]),
+            'token' => $this->faker->uuid(),
         ];
     }
 }

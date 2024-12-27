@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('circuit_id', 200);
             $table->integer('circuit_speed');
-            $table->string('request_status')->default('pendente');
-            $table->string('token', 50);
+            $table->enum('request_status', ["pendente","sucesso","rejeitado"])->default('pendente');
+            $table->uuid('token');
             $table->timestamps();
         });
     }
