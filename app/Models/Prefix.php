@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Request extends Model
+class Prefix extends Model
 {
     use HasFactory;
 
@@ -15,10 +16,8 @@ class Request extends Model
      * @var array
      */
     protected $fillable = [
-        'circuit_id',
-        'circuit_speed',
-        'request_status',
-        'token',
+        'ip_prefix',
+        'request_id',
     ];
 
     /**
@@ -28,5 +27,11 @@ class Request extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'request_id' => 'integer',
     ];
+
+    public function request(): BelongsTo
+    {
+        return $this->belongsTo(BgpRequest::class);
+    }
 }

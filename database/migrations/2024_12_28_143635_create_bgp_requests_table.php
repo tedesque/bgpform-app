@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('requests', function (Blueprint $table) {
+        Schema::create('bgp_requests', function (Blueprint $table) {
             $table->id();
             $table->string('circuit_id', 200);
             $table->integer('circuit_speed');
-            $table->enum('request_status', ["pendente","sucesso","rejeitado"])->default('pendente');
+            $table->enum('request_status', ["Pendente","Conclu\u00edda","Rejeitada"])->default('Pendente');
             $table->uuid('token');
+            $table->string('device', 200)->nullable();
+            $table->enum('router_table', ["full route","partial route","default route"])->default('full route')->nullable();
+            $table->integer('asn')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('requests');
+        Schema::dropIfExists('bgp_requests');
     }
 };

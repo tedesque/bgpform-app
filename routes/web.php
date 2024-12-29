@@ -12,4 +12,6 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
+Route::get('/assign/{token}', \App\Livewire\ClientAssign::class);
+
 require __DIR__.'/auth.php';

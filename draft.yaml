@@ -1,13 +1,12 @@
 models:
-  Request:
+  bgpRequest:
     circuit_id: string:200
     circuit_speed: integer
-    request_status: enum:"pendente","sucesso","rejeitado" default:"pendente"
+    request_status: enum:"Pendente","Concluída","Rejeitada" default:"Pendente"
     token: uuid
-  Response:
-    request_id: id foreign:requests
-    device: string:200
-    router_table: enum:"full route","partial route","default route" default:"full route"
-    asn: integer
-    ipv4_prefix: ipAddress
-    ipv6_prefix: ipAddress
+    device: string:200 nullable
+    router_table: enum:"full route","partial route","default route" default:"full route" nullable
+    asn: integer nullable
+  Prefix:
+    ip_prefix: ipAddress
+    request_id: id foreign:bgp_requests

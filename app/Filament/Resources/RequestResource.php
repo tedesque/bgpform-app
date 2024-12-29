@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\RequestResource\Pages;
 use App\Filament\Resources\RequestResource\RelationManagers;
-use App\Models\Request;
+use App\Models\bgpRequest;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
 
 class RequestResource extends Resource
 {
-    protected static ?string $model = Request::class;
+    protected static ?string $model = bgpRequest::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -33,7 +33,7 @@ class RequestResource extends Resource
                     ->label('Velocidade'),
                 Forms\Components\TextInput::make('token')
                     ->default(strval(Str::uuid()))
-                    ->label('Token'),
+                    ->label('Token')
             ]);
     }
 
@@ -44,9 +44,9 @@ class RequestResource extends Resource
                 Tables\Columns\TextColumn::make('circuit_id')->label('Designador do circuito'),
                 Tables\Columns\TextColumn::make('circuit_speed')->label('Velocidade'),
                 Tables\Columns\TextColumn::make('request_status')->badge()->color(fn (string $state): string => match ($state) {
-                    'pendente' => 'warning',
-                    'sucesso' => 'success',
-                    'rejeitado' => 'danger',
+                    'Pendente' => 'warning',
+                    'Concluído' => 'success',
+                    'Rejeitado' => 'danger',
                 }),
                 Tables\Columns\TextColumn::make('token')->label('Token'),
                 Tables\Columns\TextColumn::make('created_at')->label('Data criação'),
@@ -77,6 +77,7 @@ class RequestResource extends Resource
             'index' => Pages\ListRequests::route('/'),
             'create' => Pages\CreateRequest::route('/create'),
             'edit' => Pages\EditRequest::route('/{record}/edit'),
+            'assign' => Pages\ClientAssign::route('/assign/{record}'),
         ];
     }
 }

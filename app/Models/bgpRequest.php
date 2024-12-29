@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Response extends Model
+class bgpRequest extends Model
 {
     use HasFactory;
 
@@ -16,13 +15,19 @@ class Response extends Model
      * @var array
      */
     protected $fillable = [
-        'request_id',
+        'circuit_id',
+        'circuit_speed',
+        'request_status',
+        'token',
         'device',
         'router_table',
         'asn',
-        'ipv4_prefix',
-        'ipv6_prefix',
     ];
+
+    public function prefixes()
+    {
+        return $this->hasMany(Prefix::class);
+    }
 
     /**
      * The attributes that should be cast to native types.
@@ -31,11 +36,5 @@ class Response extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'request_id' => 'integer',
     ];
-
-    public function request(): BelongsTo
-    {
-        return $this->belongsTo(Request::class);
-    }
 }

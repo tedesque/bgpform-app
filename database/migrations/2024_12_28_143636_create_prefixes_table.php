@@ -13,14 +13,10 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('responses', function (Blueprint $table) {
+        Schema::create('prefixes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('request_id')->constrained();
-            $table->string('device', 200);
-            $table->enum('router_table', ["full route","partial route","default route"])->default('full route');
-            $table->integer('asn');
-            $table->ipAddress('ipv4_prefix');
-            $table->ipAddress('ipv6_prefix');
+            $table->ipAddress('ip_prefix');
+            $table->foreignId('request_id')->constrained('bgp_requests');
             $table->timestamps();
         });
 
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('responses');
+        Schema::dropIfExists('prefixes');
     }
 };
