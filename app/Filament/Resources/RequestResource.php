@@ -34,6 +34,7 @@ class RequestResource extends Resource
                 Forms\Components\TextInput::make('token')
                     ->default(strval(Str::uuid()))
                     ->label('Token')
+                    ->readonly()
             ]);
     }
 
@@ -45,7 +46,7 @@ class RequestResource extends Resource
                 Tables\Columns\TextColumn::make('circuit_speed')->label('Velocidade'),
                 Tables\Columns\TextColumn::make('request_status')->badge()->color(fn (string $state): string => match ($state) {
                     'Pendente' => 'warning',
-                    'Concluído' => 'success',
+                    'Concluida' => 'success',
                     'Rejeitado' => 'danger',
                 }),
                 Tables\Columns\TextColumn::make('token')->label('Token'),

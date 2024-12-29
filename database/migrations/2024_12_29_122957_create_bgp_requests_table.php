@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('circuit_id', 200);
             $table->integer('circuit_speed');
-            $table->enum('request_status', ["Pendente","Conclu\u00edda","Rejeitada"])->default('Pendente');
+            $table->enum('request_status', ["Pendente","Concluida","Rejeitada"])->default('Pendente');
             $table->uuid('token');
             $table->string('device', 200)->nullable();
-            $table->enum('router_table', ["full route","partial route","default route"])->default('full route')->nullable();
+            $table->enum('router_table', ["Full Route","Partial Route","Default Route"])->default('Full Route')->nullable();
             $table->integer('asn')->nullable();
             $table->timestamps();
         });

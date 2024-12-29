@@ -2,10 +2,10 @@ models:
   bgpRequest:
     circuit_id: string:200
     circuit_speed: integer
-    request_status: enum:"Pendente","Concluída","Rejeitada" default:"Pendente"
+    request_status: enum:"Pendente","Concluida","Rejeitada" default:"Pendente"
     token: uuid
     device: string:200 nullable
-    router_table: enum:"full route","partial route","default route" default:"full route" nullable
+    router_table: enum:"Full Route","Partial Route","Default Route" default:"Full Route" nullable
     asn: integer nullable
   Prefix:
     ip_prefix: ipAddress

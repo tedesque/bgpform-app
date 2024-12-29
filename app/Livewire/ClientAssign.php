@@ -9,7 +9,6 @@ class ClientAssign extends Component
 {
 
     public $token;
-
     public $device;
     public $router_table;
     public $asn;
@@ -21,7 +20,7 @@ class ClientAssign extends Component
 
         $bgpRequest = bgpRequest::where('token', $token)->firstOrFail();
 
-        if ($bgpRequest->status === 'Concluída') {
+        if ($bgpRequest->request_status === 'Concluida') {
             abort(403, 'Esta solicitação já foi concluída.');
         }
 
@@ -67,15 +66,15 @@ class ClientAssign extends Component
 
         // Em seguida, criar os novos prefixos
         foreach ($this->prefix as $prefixData) {
-            if (!empty($prefixData['type']) && !empty($prefixData['prefix'])) {
+            if (!empty($prefixData['ip_prefix'])) {
                 $bgpRequest->prefixes()->create([
-                    'prefix' => $prefixData['prefix'],
+                    'ip_prefix' => $prefixData['ip_prefix'],
                 ]);
             }
         }
 
         // Atualizar o status da solicitação
-        $bgpRequest->update(['status' => 'concluido']);
+        $bgpRequest->update(['request_status' => 'Concluida']);
 
         // Redirecionar ou exibir uma mensagem de sucesso
         session()->flash('success', 'Dados enviados com sucesso!');
@@ -83,6 +82,6 @@ class ClientAssign extends Component
 
     public function render()
     {
-        return view('livewire.client-assign')->layout('layouts.guest');
+        return view('livewire.client-assign')->layout('layouts.client');
     }
 }

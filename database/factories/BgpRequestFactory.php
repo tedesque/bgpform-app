@@ -23,10 +23,10 @@ class BgpRequestFactory extends Factory
         return [
             'circuit_id' => $this->faker->regexify('[A-Za-z0-9]{200}'),
             'circuit_speed' => $this->faker->numberBetween(-10000, 10000),
-            'request_status' => $this->faker->randomElement(["Pendente","Conclu\u00edda","Rejeitada"]),
+            'request_status' => $this->faker->randomElement(["Pendente","Concluida","Rejeitada"]),
             'token' => $this->faker->uuid(),
             'device' => $this->faker->regexify('[A-Za-z0-9]{200}'),
-            'router_table' => $this->faker->randomElement(["full route","partial route","default route"]),
+            'router_table' => $this->faker->randomElement(["Full Route","Partial Route","Default Route"]),
             'asn' => $this->faker->numberBetween(-10000, 10000),
         ];
     }
