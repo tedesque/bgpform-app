@@ -23,7 +23,7 @@ class PrefixFactory extends Factory
     {
         return [
             'ip_prefix' => $this->faker->ipv4(),
-            'request_id' => BgpRequest::factory(),
+            'bgp_request_id' => BgpRequest::factory(),
         ];
     }
 }

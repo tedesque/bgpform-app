@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class bgpRequest extends Model
+class BgpRequest extends Model
 {
     use HasFactory;
 
@@ -23,11 +23,6 @@ class bgpRequest extends Model
         'router_table',
         'asn',
     ];
-
-    public function prefixes()
-    {
-        return $this->hasMany(Prefix::class);
-    }
 
     /**
      * The attributes that should be cast to native types.

@@ -1,11 +1,11 @@
 created:
     - database/factories/BgpRequestFactory.php
     - database/factories/PrefixFactory.php
-    - database/migrations/2024_12_28_143635_create_bgp_requests_table.php
-    - database/migrations/2024_12_28_143636_create_prefixes_table.php
+    - database/migrations/2024_12_29_023255_create_bgp_requests_table.php
+    - database/migrations/2024_12_29_023256_create_prefixes_table.php
     - app/Models/bgpRequest.php
     - app/Models/Prefix.php
 models:
     User: { name: string, email: string, email_verified_at: 'timestamp nullable', password: string, remember_token: 'string:100 nullable' }
     bgpRequest: { circuit_id: 'string:200', circuit_speed: integer, request_status: 'enum:"Pendente","Concluída","Rejeitada" default:"Pendente"', token: uuid, device: 'string:200 nullable', router_table: 'enum:"full route","partial route","default route" default:"full route" nullable', asn: 'integer nullable' }
-    Prefix: { ip_prefix: ipAddress, request_id: 'id foreign:bgp_requests' }
+    Prefix: { ip_prefix: ipAddress, bgp_request_id: 'id foreign:bgp_requests' }

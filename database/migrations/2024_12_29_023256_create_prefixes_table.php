@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('prefixes', function (Blueprint $table) {
             $table->id();
             $table->ipAddress('ip_prefix');
-            $table->foreignId('request_id')->constrained('bgp_requests');
+            $table->foreignId('bgp_request_id')->constrained();
             $table->timestamps();
         });
 

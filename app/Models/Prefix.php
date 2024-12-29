@@ -17,7 +17,7 @@ class Prefix extends Model
      */
     protected $fillable = [
         'ip_prefix',
-        'request_id',
+        'bgp_request_id',
     ];
 
     /**
@@ -27,10 +27,10 @@ class Prefix extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'request_id' => 'integer',
+        'bgp_request_id' => 'integer',
     ];
 
-    public function request(): BelongsTo
+    public function bgpRequest(): BelongsTo
     {
         return $this->belongsTo(BgpRequest::class);
     }

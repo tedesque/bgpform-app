@@ -9,4 +9,4 @@ models:
     asn: integer nullable
   Prefix:
     ip_prefix: ipAddress
-    request_id: id foreign:bgp_requests
+    bgp_request_id: id foreign:bgp_requests

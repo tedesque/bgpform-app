@@ -13,8 +13,8 @@
         <form wire:submit.prevent="submit">
             <!-- Roteador -->
             <div class="mb-4">
-                <label for="roteador" class="block text-gray-700">Roteador</label>
-                <input type="text" id="roteador" wire:model.defer="roteador"
+                <label for="device" class="block text-gray-700">Roteador</label>
+                <input type="text" id="device" wire:model.defer="device"
                     class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" required>
                 @error('roteador')
                     <span class="text-sm text-red-500">{{ $message }}</span>
@@ -27,9 +27,9 @@
                 <select id="tabela_roteamento" wire:model.defer="tabela_roteamento"
                     class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" required>
                     <option value="">-- Selecione --</option>
-                    <option value="partial">Partial</option>
-                    <option value="full route">Full Route</option>
-                    <option value="default">Default</option>
+                    <option value="Partial Route">Partial</option>
+                    <option value="Full Route">Full Route</option>
+                    <option value="Default Route">Default</option>
                 </select>
                 @error('tabela_roteamento')
                     <span class="text-sm text-red-500">{{ $message }}</span>
@@ -49,7 +49,7 @@
             <!-- Prefixos -->
             <div class="mb-4">
                 <h2 class="mb-2 text-xl font-semibold">Prefixos</h2>
-                @foreach ($prefixos as $index => $prefix)
+                @foreach ($prefix as $index => $prefix)
                     <div class="relative p-4 mb-4 border rounded-md">
                         <button type="button" wire:click.prevent="removePrefix({{ $index }})"
                             class="absolute text-red-500 top-2 right-2 hover:text-red-700">
@@ -57,21 +57,10 @@
                         </button>
                         <!-- Tipo -->
                         <div class="mb-2">
-                            <label class="block text-gray-700">Tipo</label>
-                            <select wire:model.defer="prefixos.{{ $index }}.type"
-                                class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" required>
-                                <option value="">-- Selecione --</option>
-                                <option value="ipv4">IPv4</option>
-                                <option value="ipv6">IPv6</option>
-                            </select>
-                            @error('prefixos.' . $index . '.type')
-                                <span class="text-sm text-red-500">{{ $message }}</span>
-                            @enderror
-                        </div>
 
                         <!-- Prefixo -->
                         <div>
-                            <label class="block text-gray-700">Prefixo</label>
+                            <label class="block text-gray-700">Pefixo</label>
                             <input type="text" wire:model.defer="prefixos.{{ $index }}.prefix"
                                 class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" required>
                             @error('prefixos.' . $index . '.prefix')
