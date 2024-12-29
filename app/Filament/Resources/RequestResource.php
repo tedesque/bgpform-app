@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\RequestResource\Pages;
 use App\Filament\Resources\RequestResource\RelationManagers;
-use App\Models\bgpRequest;
+use App\Models\BgpRequest;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
 
 class RequestResource extends Resource
 {
-    protected static ?string $model = bgpRequest::class;
+    protected static ?string $model = BgpRequest::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -34,7 +34,20 @@ class RequestResource extends Resource
                 Forms\Components\TextInput::make('token')
                     ->default(strval(Str::uuid()))
                     ->label('Token')
+                    ->readonly(),
+                Forms\Components\TextInput::make('device')
+                    ->label('Router')
+                    ->maxLength(500)
+                    ->visible(fn ($record) => $record !== null),
+                Forms\Components\TextInput::make('asn')
+                    ->label('ASN')
+                    ->maxLength(30)
+                    ->visible(fn ($record) => $record !== null),
+                Forms\Components\TextInput::make('router_table')
+                    ->label('Tabela de roteamento solicitada')
+                    ->maxLength(100)
                     ->readonly()
+                    ->visible(fn ($record) => $record !== null)
             ]);
     }
 
@@ -68,7 +81,7 @@ class RequestResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\PrefixRelationManager::class
         ];
     }
 
@@ -78,7 +91,6 @@ class RequestResource extends Resource
             'index' => Pages\ListRequests::route('/'),
             'create' => Pages\CreateRequest::route('/create'),
             'edit' => Pages\EditRequest::route('/{record}/edit'),
-            'assign' => Pages\ClientAssign::route('/assign/{record}'),
         ];
     }
 }
