@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BgpRequest extends Model
 {
@@ -20,15 +20,19 @@ class BgpRequest extends Model
         'circuit_speed',
         'request_status',
         'token',
-        'device',
         'router_table',
         'asn',
+        'multihop',
+        'md5_session',
+        'not_owner_as',
+        'tech_name1',
+        'tech_phone1',
+        'tech_mail1',
+        'tech_name2',
+        'tech_phone2',
+        'tech_mail2',
     ];
-    
-    public function prefixes(): HasMany
-    {
-        return $this->hasMany(Prefix::class);
-    }
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -36,5 +40,12 @@ class BgpRequest extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'multihop' => 'boolean',
+        'not_owner_as' => 'boolean',
     ];
+
+    public function prefixes(): HasMany
+    {
+        return $this->hasMany(Prefix::class);
+    }
 }

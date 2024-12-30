@@ -1,12 +1,24 @@
 models:
-  bgpRequest:
+  BgpRequest:
     circuit_id: string:200
     circuit_speed: integer
     request_status: enum:"Pendente","Concluida","Rejeitada" default:"Pendente"
     token: uuid
-    device: string:200 nullable
     router_table: enum:"Full Route","Partial Route","Default Route" default:"Full Route" nullable
     asn: integer nullable
+    multihop: boolean default:false
+    md5_session: string:255 nullable
+    not_owner_as: boolean default:false
+    tech_name1: string:200 nullable
+    tech_phone1: string:30 nullable
+    tech_mail1: string:200 nullable
+    tech_name2: string:200 nullable
+    tech_phone2: string:30 nullable
+    tech_mail2: string:200 nullable
+    relationships:
+      hasMany: Prefix
   Prefix:
     ip_prefix: ipAddress
     bgp_request_id: id foreign:bgp_requests
+
+    

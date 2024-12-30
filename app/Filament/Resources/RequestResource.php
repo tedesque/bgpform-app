@@ -24,6 +24,10 @@ class RequestResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('token')
+                    ->default(strval(Str::uuid()))
+                    ->label('Token')
+                    ->readonly(),
                 Forms\Components\TextInput::make('circuit_id')
                     ->required()
                     ->label('Designador'),
@@ -31,14 +35,6 @@ class RequestResource extends Resource
                     ->required()
                     ->numeric()
                     ->label('Velocidade'),
-                Forms\Components\TextInput::make('token')
-                    ->default(strval(Str::uuid()))
-                    ->label('Token')
-                    ->readonly(),
-                Forms\Components\TextInput::make('device')
-                    ->label('Router')
-                    ->maxLength(500)
-                    ->visible(fn ($record) => $record !== null),
                 Forms\Components\TextInput::make('asn')
                     ->label('ASN')
                     ->maxLength(30)
@@ -47,7 +43,10 @@ class RequestResource extends Resource
                     ->label('Tabela de roteamento solicitada')
                     ->maxLength(100)
                     ->readonly()
-                    ->visible(fn ($record) => $record !== null)
+                    ->visible(fn ($record) => $record !== null),
+                Forms\Components\TextInput::make('tech_name1')
+                    ->label('Responsável técnico')
+                    ->columnSpan('half')
             ]);
     }
 
@@ -62,6 +61,7 @@ class RequestResource extends Resource
                     'Concluida' => 'success',
                     'Rejeitado' => 'danger',
                 }),
+                Tables\Columns\TextColumn::make('asn')->label('ASN'),
                 Tables\Columns\TextColumn::make('token')->label('Token'),
                 Tables\Columns\TextColumn::make('created_at')->label('Data criação'),
             ])
