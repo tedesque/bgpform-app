@@ -10,6 +10,12 @@ class ListRequests extends ListRecords
 {
     protected static string $resource = RequestResource::class;
 
+    public function getHeading(): string
+    {
+        return 'Requisições BGP';
+    }
+
+
     protected function getHeaderActions(): array
     {
         return [

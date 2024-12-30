@@ -6,6 +6,9 @@ use App\Filament\Resources\RequestResource\Pages;
 use App\Filament\Resources\RequestResource\RelationManagers;
 use App\Models\BgpRequest;
 use Filament\Forms;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -19,6 +22,17 @@ class RequestResource extends Resource
     protected static ?string $model = BgpRequest::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+    return $infolist
+        ->schema([
+            Infolists\Components\TextEntry::make('token'),
+            Infolists\Components\TextEntry::make('asn'),
+            Infolists\Components\TextEntry::make('circuit_id')
+                ->columnSpanFull(),
+        ]);
+    }
 
     public static function form(Form $form): Form
     {
@@ -47,6 +61,7 @@ class RequestResource extends Resource
                 Forms\Components\TextInput::make('tech_name1')
                     ->label('Responsável técnico')
                     ->columnSpan('half')
+                    ->visible(fn ($record) => $record !== null),
             ]);
     }
 
@@ -62,13 +77,17 @@ class RequestResource extends Resource
                     'Rejeitado' => 'danger',
                 }),
                 Tables\Columns\TextColumn::make('asn')->label('ASN'),
-                Tables\Columns\TextColumn::make('token')->label('Token'),
+                Tables\Columns\TextColumn::make('token')->label('Token')
+                    ->copyable()
+                    ->copyMessage('Copiado!')
+                    ->copyMessageDuration(1500),
                 Tables\Columns\TextColumn::make('created_at')->label('Data criação'),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -90,6 +109,7 @@ class RequestResource extends Resource
         return [
             'index' => Pages\ListRequests::route('/'),
             'create' => Pages\CreateRequest::route('/create'),
+            'view' => Pages\ViewBgpEntry::route('{record}'),
             'edit' => Pages\EditRequest::route('/{record}/edit'),
         ];
     }
