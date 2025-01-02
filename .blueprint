@@ -1,11 +1,11 @@
 created:
     - database/factories/BgpRequestFactory.php
     - database/factories/PrefixFactory.php
-    - database/migrations/2024_12_29_173507_create_bgp_requests_table.php
-    - database/migrations/2024_12_29_173508_create_prefixes_table.php
+    - database/migrations/2024_12_30_172511_create_bgp_requests_table.php
+    - database/migrations/2024_12_30_172512_create_prefixes_table.php
     - app/Models/BgpRequest.php
     - app/Models/Prefix.php
 models:
     User: { name: string, email: string, email_verified_at: 'timestamp nullable', password: string, remember_token: 'string:100 nullable' }
-    BgpRequest: { circuit_id: 'string:200', circuit_speed: integer, request_status: 'enum:"Pendente","Concluida","Rejeitada" default:"Pendente"', token: uuid, router_table: 'enum:"Full Route","Partial Route","Default Route" default:"Full Route" nullable', asn: 'integer nullable', multihop: 'boolean default:false', md5_session: 'string:255 nullable', not_owner_as: 'boolean default:false', tech_name1: 'string:200 nullable', tech_phone1: 'string:30 nullable', tech_mail1: 'string:200 nullable', tech_name2: 'string:200 nullable', tech_phone2: 'string:30 nullable', tech_mail2: 'string:200 nullable', relationships: { hasMany: Prefix } }
+    BgpRequest: { circuit_id: 'string:200', circuit_speed: integer, request_status: 'enum:"Pendente","Concluida","Rejeitada" default:"Pendente"', token: uuid, router_table: 'enum:"Full Route","Partial Route","Default Route" default:"Full Route" nullable', asn: 'integer nullable', as_set: 'string:200 nullable', multihop: 'boolean default:false', md5_session: 'string:255 nullable', not_owner_as: 'boolean default:false', tech_name1: 'string:200 nullable', tech_phone1: 'string:30 nullable', tech_mail1: 'string:200 nullable', tech_name2: 'string:200 nullable', tech_phone2: 'string:30 nullable', tech_mail2: 'string:200 nullable', relationships: { hasMany: Prefix } }
     Prefix: { ip_prefix: ipAddress, bgp_request_id: 'id foreign:bgp_requests' }

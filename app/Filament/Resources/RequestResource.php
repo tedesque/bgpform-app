@@ -58,10 +58,20 @@ class RequestResource extends Resource
                     ->maxLength(100)
                     ->readonly()
                     ->visible(fn ($record) => $record !== null),
+                Forms\Components\TextInput::make('as_set')
+                    ->label('AS-SET')
+                    ->maxLength(30)
+                    ->visible(fn ($record) => $record !== null),
                 Forms\Components\TextInput::make('tech_name1')
                     ->label('Responsável técnico')
                     ->columnSpan('half')
                     ->visible(fn ($record) => $record !== null),
+                Forms\Components\Select::make('request_status')
+                    ->options([
+                        'Concluida' => 'Concluída',
+                        'Pendente' => 'Pendente',
+                        'Rejeitada' => 'Rejeitada',
+                    ])
             ]);
     }
 
@@ -74,7 +84,7 @@ class RequestResource extends Resource
                 Tables\Columns\TextColumn::make('request_status')->badge()->color(fn (string $state): string => match ($state) {
                     'Pendente' => 'warning',
                     'Concluida' => 'success',
-                    'Rejeitado' => 'danger',
+                    'Rejeitada' => 'danger',
                 }),
                 Tables\Columns\TextColumn::make('asn')->label('ASN'),
                 Tables\Columns\TextColumn::make('token')->label('Token')

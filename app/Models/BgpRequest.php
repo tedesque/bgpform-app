@@ -22,6 +22,7 @@ class BgpRequest extends Model
         'token',
         'router_table',
         'asn',
+        'as_set',
         'multihop',
         'md5_session',
         'not_owner_as',

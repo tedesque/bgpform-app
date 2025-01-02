@@ -20,6 +20,7 @@ class ClientAssign extends Component
     public $tech_phone2;
     public $tech_mail2;
     public $asn;
+    public $as_set;
     public bool $not_owner_as = false;
     public bool $md5_checked = false;
     public $prefix = [];
@@ -37,6 +38,7 @@ class ClientAssign extends Component
         if ($BgpRequest) {
             $this->router_table = $BgpRequest->router_table;
             $this->asn = $BgpRequest->asn;
+            $this->as_set = $BgpRequest->as_set;
             $this->circuit_id = $BgpRequest->circuit_id;
             $this->md5_session = $BgpRequest->md5_session;
             $this->not_owner_as = $BgpRequest->not_owner_as;
@@ -50,7 +52,8 @@ class ClientAssign extends Component
             $this->not_owner_as = $BgpRequest->not_owner_as;
             $this->md5_checked;
 
-            
+
+
         } else {
             // Inicializar com um prefixo vazio
             $this->prefix = [
@@ -76,7 +79,7 @@ class ClientAssign extends Component
             $this->not_owner_as = false;
         }
     }
-    
+
 
     public function addPrefix()
     {
@@ -100,6 +103,7 @@ class ClientAssign extends Component
             [
                 'router_table' => $this->router_table,
                 'asn' => $this->asn,
+                'as_set' => $this->as_set,
                 'multihop' => $this->multihop,
                 'not_owner_as' => $this->not_owner_as,
                 'tech_name1' => $this->tech_name1,

@@ -27,6 +27,7 @@ class BgpRequestFactory extends Factory
             'token' => $this->faker->uuid(),
             'router_table' => $this->faker->randomElement(["Full Route","Partial Route","Default Route"]),
             'asn' => $this->faker->numberBetween(-10000, 10000),
+            'as_set' => $this->faker->regexify('[A-Za-z0-9]{200}'),
             'multihop' => $this->faker->boolean(),
             'md5_session' => $this->faker->regexify('[A-Za-z0-9]{255}'),
             'not_owner_as' => $this->faker->boolean(),

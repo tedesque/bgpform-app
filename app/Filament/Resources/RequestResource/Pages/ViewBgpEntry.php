@@ -42,7 +42,9 @@ class ViewBgpEntry extends ViewRecord
                     Infolists\Components\Section::make('ASN')
                     ->schema([
                         Infolists\Components\TextEntry::make('asn')->weight('bold'),
-                        Infolists\Components\TextEntry::make('token'),
+                        Infolists\Components\TextEntry::make('token')
+                            ->copyable()
+                            ->columnSpan(2),
                         Infolists\Components\TextEntry::make('request_status')
                             ->label('Estado da requisição')
                             ->badge()
@@ -75,9 +77,18 @@ class ViewBgpEntry extends ViewRecord
                         Infolists\Components\TextEntry::make('md5_session')
                             ->label('Senha da sessão')
                             ->icon('heroicon-m-key'),
+                        Infolists\Components\TextEntry::make('as_set')
+                            ->label('AS-SET'),
                     ])
                     ->compact()
-                    ->columns(3)
+                    ->columns(4)
             ]);
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\EditAction::make(),
+        ];
     }
 }

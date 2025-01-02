@@ -6,6 +6,7 @@ models:
     token: uuid
     router_table: enum:"Full Route","Partial Route","Default Route" default:"Full Route" nullable
     asn: integer nullable
+    as_set: string:200 nullable
     multihop: boolean default:false
     md5_session: string:255 nullable
     not_owner_as: boolean default:false
@@ -20,5 +21,3 @@ models:
   Prefix:
     ip_prefix: ipAddress
     bgp_request_id: id foreign:bgp_requests
-
-    
