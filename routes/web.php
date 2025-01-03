@@ -13,6 +13,7 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 Route::get('/assign/{token}', \App\Livewire\ClientAssign::class);
+Route::get('/assign', \App\Livewire\InsertToken::class);
 Route::view('/endmessage', 'endemessage');
 
 require __DIR__.'/auth.php';
