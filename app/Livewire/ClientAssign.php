@@ -34,9 +34,9 @@ class ClientAssign extends Component
         $AsnEntity = AsnEntity::where('bgp_request_id', $BgpRequest->id);
 
 
-        // if ($BgpRequest->request_status === 'Concluida') {
-        //     abort(403, 'Esta solicitação já foi concluída.');
-        // }
+        if ($BgpRequest->request_status === 'Concluida') {
+            abort(403, 'Esta solicitação já foi concluída.');
+        }
 
         if ($BgpRequest) {
             $this->circuit_id = $BgpRequest->circuit_id;
@@ -44,8 +44,8 @@ class ClientAssign extends Component
             $this->multihop = $BgpRequest->multihop;
             $this->md5_session = $BgpRequest->md5_session;
             $this->not_owner_as = $BgpRequest->not_owner_as;
-
         }
+
         $this->prefixes = [
             ['ip_prefix' => '']
         ];
@@ -66,17 +66,17 @@ class ClientAssign extends Component
 
     public function toggleBgpPassword()
     {
-        !$this->md5_checked ? $this->md5_checked=true : $this->md5_checked=false;
+        !$this->md5_checked ? $this->md5_checked = true : $this->md5_checked = false;
     }
 
     public function toggleDownstream()
     {
-        !$this->downstream_checked ? $this->downstream_checked=true : $this->downstream_checked=false;
+        !$this->downstream_checked ? $this->downstream_checked = true : $this->downstream_checked = false;
     }
 
     public function toogleNotOwnerAs()
     {
-        !$this->not_owner_as ? $this->not_owner_as=true : $this->not_owner_as=false;
+        !$this->not_owner_as ? $this->not_owner_as = true : $this->not_owner_as = false;
     }
 
 
@@ -136,8 +136,8 @@ class ClientAssign extends Component
         ]);
 
 
-        foreach($this->prefixes as $p){
-            if(!empty($p['ip_prefix'])){
+        foreach ($this->prefixes as $p) {
+            if (!empty($p['ip_prefix'])) {
                 $asnParent->prefixes()->create([
                     'ip_prefix' => $p['ip_prefix']
                 ]);
@@ -146,44 +146,27 @@ class ClientAssign extends Component
 
         $this->createChildren($asnParent, $this->children, $BgpRequest->id);
 
-        // // Atualizar ou criar os detalhes do cliente
-        // $assign = $BgpRequest->updateOrCreate(
-        //     ['id' => $BgpRequest->id],
-        //     [
-        //         'router_table' => $this->router_table,
-        //         'asn' => $this->asn,
-        //         'as_set' => $this->as_set,
-        //         'multihop' => $this->multihop,
-        //         'not_owner_as' => $this->not_owner_as,
-        //         'tech_name' => $this->tech_name,
-        //         'tech_phone' => $this->tech_phone,
-        //         'tech_mail' => $this->tech_mail,
-        //         'multihop' => $this->multihop,
-        //         'md5_session' => $this->md5_session
-        //     ]
-        // );
 
-        // // Em seguida, criar os novos prefixos
-        // foreach ($this->prefix as $prefixData) {
-        //     if (!empty($prefixData['ip_prefix'])) {
-        //         $BgpRequest->prefixes()->create([
-        //             'ip_prefix' => $prefixData['ip_prefix'],
-        //         ]);
-        //     }
-        // }
+        $assign = $BgpRequest->updateOrCreate(
+            ['id' => $BgpRequest->id],
+            [
+                'router_table' => $this->router_table,
+                'multihop' => $this->multihop,
+                'not_owner_as' => $this->not_owner_as,
+                'md5_session' => $this->md5_session
+            ]
+        );
 
-        // Atualizar o status da solicitação
         $BgpRequest->update(['request_status' => 'Concluida']);
 
-        // Redirecionar ou exibir uma mensagem de sucesso
         session()->flash('success', 'Dados enviados com sucesso!');
         $this->redirect('/endmessage');
     }
 
     protected function createChildren(AsnEntity $parent, array $childrenData, int $bgpRequest)
     {
-        foreach($childrenData as $child){
-            if(empty($child['asn'])){
+        foreach ($childrenData as $child) {
+            if (empty($child['asn'])) {
                 continue;
             }
             $childAsn = AsnEntity::create([
@@ -193,9 +176,9 @@ class ClientAssign extends Component
                 'bgp_request_id' => $bgpRequest,
             ]);
 
-            if(!empty($child['prefixes'])){
-                foreach($child['prefixes'] as $cp){
-                    if(!empty($cp['ip_prefix'])){
+            if (!empty($child['prefixes'])) {
+                foreach ($child['prefixes'] as $cp) {
+                    if (!empty($cp['ip_prefix'])) {
                         $childAsn->prefixes()->create([
                             'ip_prefix' => $cp['ip_prefix']
                         ]);

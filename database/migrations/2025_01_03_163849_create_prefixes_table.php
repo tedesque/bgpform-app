@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('prefixes', function (Blueprint $table) {
             $table->id();
             $table->ipAddress('ip_prefix');
-            $table->foreignId('asn_entity_id')->constrained();
+            $table->foreignId('asn_entity_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
 
