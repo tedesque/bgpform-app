@@ -75,7 +75,7 @@
                             placeholder="Ex: 192.168.0.0/24"
                             class="block w-full p-1 mt-1 text-black border-gray-500 rounded-md shadow-sm">
                         <button type="button" wire:click="removePrefix({{ $index }})"
-                            class="px-2 text-black bg-red-500 rounded-xl">X</button>
+                            class="self-end h-8 p-1 px-1 text-sm text-white bg-red-500 rounded-md">Remover</button>
                     </div>
                     @error('prefixes.' . $index . '.type')
                         <span class="text-red-600">{{ $message }}</span>
@@ -98,29 +98,31 @@
                         <div class="p-3 border">
                             <div class="flex gap-1 mb-2">
                                 <div class="flex-1">
-                                    <label class="block font-semibold text-black">ASN</label>
+                                    <label class="block text-black">ASN</label>
                                     <input type="number" wire:model.defer="children.{{ $cIndex }}.asn"
                                         class="block w-full p-1 mt-1 text-black border-gray-500 rounded-md shadow-sm">
                                 </div>
                                 <div class="flex-1">
-                                    <label class="block font-semibold text-black">AS_SET</label>
+                                    <label class="block text-gray-950">AS_SET</label>
                                     <input type="text" wire:model.defer="children.{{ $cIndex }}.as_set"
-                                        class="block w-full p-1 mt-1 text-black border-gray-500 rounded-md shadow-sm">
+                                        class="block w-full p-1 mt-1 text-black border-gray-500 rounded-md shadow-sm"
+                                        placeholder="Opcional">
                                 </div>
                                 <button type="button" wire:click="removeChild({{ $cIndex }})"
-                                    class="self-end h-10 px-2 text-white bg-red-500 rounded-xl">X</button>
+                                    class="self-end h-8 p-1 px-1 text-sm text-white bg-red-500 rounded-md">Remover</button>
                             </div>
 
                             <div class="flex-row gap-1 mb-2">
-                                <h4 class="font-bold text-black">Prefixos do Downstream</h4>
+                                <h4 class="text-gray-950">Prefixos do Downstream</h4>
                                 @foreach ($child['prefixes'] as $pIndex => $cpfx)
                                     <div class="flex gap-2 mb-2">
                                         <input type="text"
                                             wire:model.defer="children.{{ $cIndex }}.prefixes.{{ $pIndex }}.ip_prefix"
-                                            placeholder="Ex: 10.0.0.0/24" class="flex-1 p-1 border rounded-md">
+                                            placeholder="Ex: 10.0.0.0/24"
+                                            class="flex-1 p-1 text-black border rounded-md">
                                         <button type="button"
                                             wire:click="removeChildPrefix({{ $cIndex }}, {{ $pIndex }})"
-                                            class="px-2 text-white bg-red-500">X</button>
+                                            class="h-8 p-1 px-1 text-sm text-white bg-red-500 rounded-md">Remover</button>
                                     </div>
                                 @endforeach
                                 <button type="button" wire:click="addChildPrefix({{ $cIndex }})"
