@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\BgpRequest;
+use App\Models\AsnEntity;
 use App\Models\Prefix;
 
 class PrefixFactory extends Factory
@@ -23,7 +23,7 @@ class PrefixFactory extends Factory
     {
         return [
             'ip_prefix' => $this->faker->ipv4(),
-            'bgp_request_id' => BgpRequest::factory(),
+            'asn_entity_id' => AsnEntity::factory(),
         ];
     }
 }

@@ -10,15 +10,15 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PrefixRelationManager extends RelationManager
+class AsnEntitiesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'Prefix';
+    protected static string $relationship = 'asnEntities';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('asnEntity')
+                Forms\Components\TextInput::make('asn')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -27,9 +27,11 @@ class PrefixRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('asnEntity')
+            ->recordTitleAttribute('asn')
             ->columns([
-                Tables\Columns\TextColumn::make('asnEntity'),
+                Tables\Columns\TextColumn::make('asn'),
+                Tables\Columns\TextColumn::make('as_set'),
+                Tables\Columns\TextColumn::make('prefixes.ip_prefix')->label('Prefixos')
             ])
             ->filters([
                 //

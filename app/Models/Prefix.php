@@ -17,7 +17,7 @@ class Prefix extends Model
      */
     protected $fillable = [
         'ip_prefix',
-        'bgp_request_id',
+        'asn_entity_id',
     ];
 
     /**
@@ -27,11 +27,11 @@ class Prefix extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'bgp_request_id' => 'integer',
+        'asn_entity_id' => 'integer',
     ];
 
-    public function bgpRequest(): BelongsTo
+    public function asnEntity(): BelongsTo
     {
-        return $this->belongsTo(BgpRequest::class);
+        return $this->belongsTo(AsnEntity::class);
     }
 }

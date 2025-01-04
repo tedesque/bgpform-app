@@ -21,17 +21,9 @@ class BgpRequest extends Model
         'request_status',
         'token',
         'router_table',
-        'asn',
-        'as_set',
         'multihop',
         'md5_session',
         'not_owner_as',
-        'tech_name1',
-        'tech_phone1',
-        'tech_mail1',
-        'tech_name2',
-        'tech_phone2',
-        'tech_mail2',
     ];
 
     /**
@@ -45,8 +37,8 @@ class BgpRequest extends Model
         'not_owner_as' => 'boolean',
     ];
 
-    public function prefixes(): HasMany
+    public function asnEntities(): HasMany
     {
-        return $this->hasMany(Prefix::class);
+        return $this->hasMany(AsnEntity::class);
     }
 }

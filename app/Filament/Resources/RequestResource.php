@@ -10,6 +10,7 @@ use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -49,29 +50,29 @@ class RequestResource extends Resource
                     ->required()
                     ->numeric()
                     ->label('Velocidade'),
-                Forms\Components\TextInput::make('asn')
-                    ->label('ASN')
-                    ->maxLength(30)
-                    ->visible(fn ($record) => $record !== null),
+                // Forms\Components\TextInput::make('asn')
+                //     ->label('ASN')
+                //     ->maxLength(30)
+                //     ->visible(fn ($record) => $record !== null),
                 Forms\Components\TextInput::make('router_table')
                     ->label('Tabela de roteamento solicitada')
                     ->maxLength(100)
                     ->readonly()
                     ->visible(fn ($record) => $record !== null),
-                Forms\Components\TextInput::make('as_set')
-                    ->label('AS-SET')
-                    ->maxLength(30)
-                    ->visible(fn ($record) => $record !== null),
-                Forms\Components\TextInput::make('tech_name1')
-                    ->label('Responsável técnico')
-                    ->columnSpan('half')
-                    ->visible(fn ($record) => $record !== null),
+                // Forms\Components\TextInput::make('as_set')
+                //     ->label('AS-SET')
+                //     ->maxLength(30)
+                //     ->visible(fn ($record) => $record !== null),
+                // Forms\Components\TextInput::make('tech_name1')
+                //     ->label('Responsável técnico')
+                //     ->columnSpan('half')
+                //     ->visible(fn ($record) => $record !== null),
                 Forms\Components\Select::make('request_status')
                     ->options([
                         'Concluida' => 'Concluída',
                         'Pendente' => 'Pendente',
                         'Rejeitada' => 'Rejeitada',
-                    ])
+                    ])->default('Pendente')
             ]);
     }
 
@@ -86,7 +87,7 @@ class RequestResource extends Resource
                     'Concluida' => 'success',
                     'Rejeitada' => 'danger',
                 }),
-                Tables\Columns\TextColumn::make('asn')->label('ASN'),
+                // Tables\Columns\TextColumn::make('asn')->label('ASN'),
                 Tables\Columns\TextColumn::make('token')->label('Token')
                     ->copyable()
                     ->copyMessage('Copiado!')
@@ -110,7 +111,8 @@ class RequestResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\PrefixRelationManager::class
+            // RelationManagers\PrefixRelationManager::class,
+            RelationManagers\AsnEntitiesRelationManager::class
         ];
     }
 

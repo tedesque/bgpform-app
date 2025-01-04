@@ -26,17 +26,9 @@ class BgpRequestFactory extends Factory
             'request_status' => $this->faker->randomElement(["Pendente","Concluida","Rejeitada"]),
             'token' => $this->faker->uuid(),
             'router_table' => $this->faker->randomElement(["Full Route","Partial Route","Default Route"]),
-            'asn' => $this->faker->numberBetween(-10000, 10000),
-            'as_set' => $this->faker->regexify('[A-Za-z0-9]{200}'),
             'multihop' => $this->faker->boolean(),
             'md5_session' => $this->faker->regexify('[A-Za-z0-9]{255}'),
             'not_owner_as' => $this->faker->boolean(),
-            'tech_name1' => $this->faker->regexify('[A-Za-z0-9]{200}'),
-            'tech_phone1' => $this->faker->regexify('[A-Za-z0-9]{30}'),
-            'tech_mail1' => $this->faker->regexify('[A-Za-z0-9]{200}'),
-            'tech_name2' => $this->faker->regexify('[A-Za-z0-9]{200}'),
-            'tech_phone2' => $this->faker->regexify('[A-Za-z0-9]{30}'),
-            'tech_mail2' => $this->faker->regexify('[A-Za-z0-9]{200}'),
         ];
     }
 }

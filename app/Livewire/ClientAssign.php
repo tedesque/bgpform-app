@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\AsnEntity;
 use Filament\Notifications\Notification;
 use Livewire\Component;
 use App\Models\BgpRequest;
@@ -13,118 +14,163 @@ class ClientAssign extends Component
     public $router_table;
     public $multihop;
     public $md5_session;
-    public $tech_name1;
-    public $tech_phone1;
-    public $tech_mail1;
-    public $tech_name2;
-    public $tech_phone2;
-    public $tech_mail2;
-    public $asn;
-    public $as_set;
     public bool $not_owner_as = false;
     public bool $md5_checked = false;
-    public $prefix = [];
+    public bool $downstream_checked = false;
+
+    public $tech_name;
+    public $tech_phone;
+    public $tech_mail;
+    public $asn;
+    public $as_set;
+    public $prefixes = [];
+    public $children = [];
 
     public function mount($token)
     {
         $this->token = $token;
 
         $BgpRequest = BgpRequest::where('token', $token)->firstOrFail();
+        $AsnEntity = AsnEntity::where('bgp_request_id', $BgpRequest->id);
 
-        if ($BgpRequest->request_status === 'Concluida') {
-            abort(403, 'Esta solicitação já foi concluída.');
-        }
+
+        // if ($BgpRequest->request_status === 'Concluida') {
+        //     abort(403, 'Esta solicitação já foi concluída.');
+        // }
 
         if ($BgpRequest) {
-            $this->router_table = $BgpRequest->router_table;
-            $this->asn = $BgpRequest->asn;
-            $this->as_set = $BgpRequest->as_set;
             $this->circuit_id = $BgpRequest->circuit_id;
+            $this->router_table = $BgpRequest->router_table;
+            $this->multihop = $BgpRequest->multihop;
             $this->md5_session = $BgpRequest->md5_session;
             $this->not_owner_as = $BgpRequest->not_owner_as;
-            $this->tech_name1 = $BgpRequest->tech_name1;
-            $this->tech_phone1 = $BgpRequest->tech_phone1;
-            $this->tech_mail1 = $BgpRequest->tech_mail1;
-            $this->tech_name2 = $BgpRequest->tech_name2;
-            $this->tech_phone2 = $BgpRequest->tech_phone2;
-            $this->tech_mail2 = $BgpRequest->tech_mail2;
-            $this->multihop = $BgpRequest->multihop;
-            $this->not_owner_as = $BgpRequest->not_owner_as;
-            $this->md5_checked;
 
-
-
-        } else {
-            // Inicializar com um prefixo vazio
-            $this->prefix = [
-                ['prefix' => ''],
-            ];
         }
+        $this->prefixes = [
+            ['ip_prefix' => '']
+        ];
+        $this->children = [
+            [
+                'asn' => '',
+                'as_set' => '',
+                'tech_name' => '',
+                'tech_phone' => '',
+                'tech_mail' => '',
+                'prefixes' => [
+                    ['ip_prefix' => '']
+                ],
+                'children' => [],
+            ],
+        ];
     }
 
-    public function setBgpPassword()
+    public function toggleBgpPassword()
     {
-        if (!$this->md5_checked) {
-            $this->md5_checked = true;
-        } else {
-            $this->md5_checked = false;
-        }
+        !$this->md5_checked ? $this->md5_checked=true : $this->md5_checked=false;
     }
 
-    public function setIsNotOwnerAS()
+    public function toggleDownstream()
     {
-        if (!$this->not_owner_as) {
-            $this->not_owner_as = true;
-        } else {
-            $this->not_owner_as = false;
-        }
+        !$this->downstream_checked ? $this->downstream_checked=true : $this->downstream_checked=false;
+    }
+
+    public function toogleNotOwnerAs()
+    {
+        !$this->not_owner_as ? $this->not_owner_as=true : $this->not_owner_as=false;
     }
 
 
     public function addPrefix()
     {
-        $this->prefix[] = ['ip_prefix' => ''];
+        $this->prefixes[] = ['ip_prefix' => ''];
     }
 
     public function removePrefix($index)
     {
-        unset($this->prefix[$index]);
-        $this->prefix = array_values($this->prefix);
+        unset($this->prefixes[$index]);
+        $this->prefixes = array_values($this->prefixes);
     }
+
+    public function addChild()
+    {
+        $this->children[] = [
+            'asn' => '',
+            'as_set' => '',
+            'prefixes' => [
+                ['ip_prefix' => '']
+            ],
+            'children' => [],
+        ];
+    }
+
+    public function removeChild($index)
+    {
+        unset($this->children[$index]);
+        $this->children = array_values($this->children);
+    }
+
+    public function addChildPrefix($childIndex)
+    {
+        $this->children[$childIndex]['prefixes'][] = ['ip_prefix' => ''];
+    }
+
+    public function removeChildPrefix($childIndex, $prefixIndex)
+    {
+        unset($this->children[$childIndex]['prefixes'][$prefixIndex]);
+        $this->children[$childIndex]['prefixes'] = array_values($this->children[$childIndex]['prefixes']);
+    }
+
 
     public function submit()
     {
-        // Buscar a solicitação pelo token
         $BgpRequest = BgpRequest::where('token', $this->token)->firstOrFail();
 
-        // Atualizar ou criar os detalhes do cliente
-        $assign = $BgpRequest->updateOrCreate(
-            ['id' => $BgpRequest->id],
-            [
-                'router_table' => $this->router_table,
-                'asn' => $this->asn,
-                'as_set' => $this->as_set,
-                'multihop' => $this->multihop,
-                'not_owner_as' => $this->not_owner_as,
-                'tech_name1' => $this->tech_name1,
-                'tech_phone1' => $this->tech_phone1,
-                'tech_mail1' => $this->tech_mail1,
-                'tech_name2' => $this->tech_name2,
-                'tech_phone2' => $this->tech_phone2,
-                'tech_mail2' => $this->tech_mail2,
-                'multihop' => $this->multihop,
-                'md5_session' => $this->md5_session
-            ]
-        );
+        $asnParent = AsnEntity::create([
+            'asn' => $this->asn,
+            'as_set' => $this->as_set,
+            'bgp_request_id' => $BgpRequest->id,
+            'parent_id' => null,
+            'tech_name' => $this->tech_name,
+            'tech_mail' => $this->tech_mail,
+            'tech_phone' => $this->tech_phone,
+        ]);
 
-        // Em seguida, criar os novos prefixos
-        foreach ($this->prefix as $prefixData) {
-            if (!empty($prefixData['ip_prefix'])) {
-                $BgpRequest->prefixes()->create([
-                    'ip_prefix' => $prefixData['ip_prefix'],
+
+        foreach($this->prefixes as $p){
+            if(!empty($p['ip_prefix'])){
+                $asnParent->prefixes()->create([
+                    'ip_prefix' => $p['ip_prefix']
                 ]);
             }
         }
+
+        $this->createChildren($asnParent, $this->children, $BgpRequest->id);
+
+        // // Atualizar ou criar os detalhes do cliente
+        // $assign = $BgpRequest->updateOrCreate(
+        //     ['id' => $BgpRequest->id],
+        //     [
+        //         'router_table' => $this->router_table,
+        //         'asn' => $this->asn,
+        //         'as_set' => $this->as_set,
+        //         'multihop' => $this->multihop,
+        //         'not_owner_as' => $this->not_owner_as,
+        //         'tech_name' => $this->tech_name,
+        //         'tech_phone' => $this->tech_phone,
+        //         'tech_mail' => $this->tech_mail,
+        //         'multihop' => $this->multihop,
+        //         'md5_session' => $this->md5_session
+        //     ]
+        // );
+
+        // // Em seguida, criar os novos prefixos
+        // foreach ($this->prefix as $prefixData) {
+        //     if (!empty($prefixData['ip_prefix'])) {
+        //         $BgpRequest->prefixes()->create([
+        //             'ip_prefix' => $prefixData['ip_prefix'],
+        //         ]);
+        //     }
+        // }
 
         // Atualizar o status da solicitação
         $BgpRequest->update(['request_status' => 'Concluida']);
@@ -132,6 +178,34 @@ class ClientAssign extends Component
         // Redirecionar ou exibir uma mensagem de sucesso
         session()->flash('success', 'Dados enviados com sucesso!');
         $this->redirect('/endmessage');
+    }
+
+    protected function createChildren(AsnEntity $parent, array $childrenData, int $bgpRequest)
+    {
+        foreach($childrenData as $child){
+            if(empty($child['asn'])){
+                continue;
+            }
+            $childAsn = AsnEntity::create([
+                'asn' => $child['asn'],
+                'as_set' => $child['as_set'],
+                'parent_id' => $parent->id,
+                'bgp_request_id' => $bgpRequest,
+            ]);
+
+            if(!empty($child['prefixes'])){
+                foreach($child['prefixes'] as $cp){
+                    if(!empty($cp['ip_prefix'])){
+                        $childAsn->prefixes()->create([
+                            'ip_prefix' => $cp['ip_prefix']
+                        ]);
+                    }
+                }
+            }
+            if (!empty($child['children'])) {
+                $this->createChildren($childAsn, $child['children'], $bgpRequest);
+            }
+        }
     }
 
     public function render()
